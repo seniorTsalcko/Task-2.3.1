@@ -2,46 +2,48 @@ package web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import web.dao.UserDAO;
 import web.model.User;
 
-import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.util.List;
 
 @Service
-@Transactional
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
-    private final UserDAO userDAO;
-
+    private final UserDAO userDao;
     @Autowired
-    public UserServiceImpl(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public UserServiceImpl(UserDAO userDao) {
+        this.userDao = userDao;
+    }
+
+
+    @Override
+    public List<User> getUsers() {
+        return userDao.getUsers();
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userDAO.getAllUsers();
+    public User getUserById(int id) {
+        return userDao.getUserById(id);
     }
 
-    @Override
-    public Object getUserById(long id) {
-        return userDAO.getUserById(id);
-    }
-
+    @Transactional
     @Override
     public void addUser(User user) {
-        userDAO.addUser(user);
+        userDao.addUser(user);
     }
 
+    @Transactional
     @Override
-    public void removeUser(long id) {
-        userDAO.removeUser(id);
+    public User updateUser(int id, User updatedUser) {
+        return userDao.updateUser(id, updatedUser);
     }
 
+    @Transactional
     @Override
-    public void updateUser(@Valid User user) {
-        userDAO.updateUser(user);
+    public void deleteUser(int id) {
+        userDao.deleteUser(id);
     }
+
 }
