@@ -16,55 +16,46 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-
 @Configuration
-@PropertySource("classpath:db.properties")
+@PropertySource(value = "classpath:db.properties")
 @EnableTransactionManagement
 @ComponentScan(value = "web")
 public class HibernateConfig {
 
-    private Environment env;
 
     @Autowired
-    public HibernateConfig(Environment env){
-        this.env = env;
-    }
-
+    private Environment env;
 
     @Bean
     public DataSource getDataSource() {
-        DriverManagerDataSource dataSources = new DriverManagerDataSource();
-        dataSources.setDriverClassName(env.getRequiredProperty("db.driver"));
-        dataSources.setUrl(env.getRequiredProperty("db.url"));
-        dataSources.setUsername(env.getRequiredProperty("db.username"));
-        dataSources.setPassword(env.getRequiredProperty("db.password"));
-
-        return dataSources;
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(env.getProperty("db.driver"));
+        dataSource.setUrl(env.getProperty("db.url"));
+        dataSource.setUsername(env.getProperty("db.username"));
+        dataSource.setPassword(env.getProperty("db.password"));
+        return dataSource;
     }
+
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean getEntityManagerFactory(){
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(getDataSource());
-        em.setPackagesToScan("web");
-        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        em.setJpaProperties(getHibernateProperties());
-        return em;
+    public LocalContainerEntityManagerFactoryBean getEntityManagerFactoryBean() {
+        LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
+        entityManager.setDataSource(getDataSource());
+        entityManager.setPackagesToScan(env.getProperty("db.model"));
+        entityManager.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        Properties props = new Properties();
+        props.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        props.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        entityManager.setJpaProperties(props);
+        return entityManager;
     }
+
 
     @Bean
-    public PlatformTransactionManager getTransactionManager(){
-        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(getEntityManagerFactory().getObject());
-        return jpaTransactionManager;
-    }
-
-    private Properties getHibernateProperties() {
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
-        properties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
-        properties.put("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto"));
-        return properties;
-
+    public PlatformTransactionManager getTransactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(getEntityManagerFactoryBean().getObject());
+        return transactionManager;
     }
 }
