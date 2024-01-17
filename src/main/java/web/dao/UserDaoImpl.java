@@ -26,6 +26,9 @@ public class UserDaoImpl implements UserDao{
     public void addUser(User user) {
         entityManager.persist(user);
     }
+
+    @Override
+    @Transactional
     public User show(int id){
         TypedQuery<User> q = entityManager.createQuery("select u from User u where u.id = :id", User.class);
 
@@ -33,6 +36,7 @@ public class UserDaoImpl implements UserDao{
         return q.getResultList().stream().findAny().orElse(null);
     }
 
+    @Override
     @Transactional
     public void update(int id, User updatedUser){
         User userToBeUpdated = show(id);
@@ -41,6 +45,7 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
+    @Transactional
     public void delete(int id) {
         entityManager.remove(entityManager.contains(show(id)) ? show(id) : entityManager.merge(show(id)));
     }

@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
-
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Users</title>
@@ -13,7 +13,7 @@
         <th>surname</th>
     </tr>
     <tbody>
-    <tr th:each="user: ${users}" >
+    <tr th:each="user: ${users}">
 
         <td th:text="${user.getId()}"/>
         <td th:text="${user.getName()}"/>
@@ -21,6 +21,6 @@
     </tr>
     </tbody>
 </table>
-<a href="new">Add new user these</a>
+<a href="/new">Add new user these</a>
 </body>
 </html>
