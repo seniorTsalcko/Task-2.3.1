@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit user</title>
+    <title>New user</title>
     <style>
         td {
             font-family: Arial, sans-serif;
@@ -16,8 +16,8 @@
             color: #333;
             background-color: ivory;
         }
-        .buttonEdit {
-            background: gold;
+        .buttonAdd {
+            background: chartreuse;
             position: relative;
             left: 50%;
             transform: translate(-50%, 0);
@@ -30,19 +30,13 @@
     </style>
 </head>
 <body>
-<h1>Edit user</h1>
-<form action="#" th:method="PATCH" th:action="@{/edit}" th:object="${user}">
+<h1>Add user</h1>
+<form action="#" method="POST" th:action="@{/new}" th:object="${user}">
     <table>
         <tr>
             <td>
-                <label for="userId">UserId</label>
-                <input readonly type="number" th:field="*{id}" id="userId" placeholder="UserId">
-            </td>
-        </tr>
-        <tr>
-            <td>
                 <label for="name">Enter name</label>
-                <input type="text" th:field="*{name}" id="name" required/>
+                <input type="text" th:field="*{nsme}" id="name" required/>
                 <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</div>
             </td>
         </tr>
@@ -55,7 +49,7 @@
         </tr>
         <tr>
             <td>
-                <input type="submit" class="buttonEdit" value="Edit user"/>
+                <input type="submit" class="buttonAdd" value="Add user"/>
             </td>
         </tr>
     </table>
