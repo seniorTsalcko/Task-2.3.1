@@ -43,14 +43,12 @@
             <td>
                 <label for="name">Enter name</label>
                 <input type="text" th:field="*{name}" id="name" required/>
-                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</div>
             </td>
         </tr>
         <tr>
             <td>
                 <label for="surname">Enter surname</label>
                 <input type="text" th:field="*{surname}" id="surname"/>
-                <div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">surname error</div>
             </td>
         </tr>
         <tr>
