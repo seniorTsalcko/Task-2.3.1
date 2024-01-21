@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import web.dao.UserDao;
 import web.model.User;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
@@ -29,11 +31,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User updatedUser) {
+    public void updateUser(@Valid User updatedUser) {
         userDao.updateUser(updatedUser);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User getUserById(int id) {
         return userDao.getUserById(id);
     }

@@ -2,6 +2,7 @@ package web.service;
 
 import web.model.User;
 
+import javax.validation.Valid;
 import java.util.List;
 
 public interface UserService {
@@ -9,7 +10,7 @@ public interface UserService {
 
     void addUser(User user);
 
-    void updateUser(User updatedUser);
+    void updateUser(@Valid User updatedUser);
 
     User getUserById(int id);
 
