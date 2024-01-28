@@ -1,7 +1,6 @@
 package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,30 +27,34 @@ public class UserController {
     }
 
     @GetMapping("/new")
-    public String addUser(Model model) {
+    public String addUser(@ModelAttribute("user") User user) {
         return "create";
     }
 
     @PostMapping("/new")
-    public String add(Model model) {
-        model.addAttribute("newUser", new User());
-        return "redirect:/";
+    public String add(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "create";
+        } else {
+            userService.addUser(user);
+            return "redirect:/";
+        }
     }
 
     @GetMapping("/{id}")
     public String getUser(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
-        return "user";
+        return "show";
     }
 
     @GetMapping("edit/{id}")
-    public String updateUser(@PathVariable("id") int id, Model model) {
+    public String editUser(@PathVariable("id") int id, Model model) {
         model.addAttribute(userService.getUserById(id));
         return "edit";
     }
 
-    @PatchMapping("/edit")
-    public String update(@Valid User user, BindingResult bindingResult) {
+    @PostMapping("/edit")
+    public String edit(@Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "edit";
         } else {
@@ -60,9 +63,9 @@ public class UserController {
         }
     }
 
-    @GetMapping("/delete")
-    public String deleteUser(@RequestParam(value = "id") int id) {
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable("id") int id) {
         userService.deleteUser(id);
-        return "redirect:/users";
+        return "redirect:/";
     }
 }
