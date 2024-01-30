@@ -1,6 +1,7 @@
 package web.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @Entity
@@ -12,8 +13,10 @@ public class User {
     @Column(name = "id")
     private int id;
     @Column(name = "name")
+    @NotEmpty
     private String name;
     @Column(name = "surname")
+    @NotEmpty
     private String surname;
 
     public User() {

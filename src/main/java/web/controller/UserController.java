@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public String add(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+    public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "create";
         } else {
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public String edit(@Valid User user, BindingResult bindingResult) {
+    public String editUser(@Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "edit";
         } else {
