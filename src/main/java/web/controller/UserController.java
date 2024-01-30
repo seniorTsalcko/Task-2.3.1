@@ -27,7 +27,8 @@ public class UserController {
     }
 
     @GetMapping("/new")
-    public String addUser(@ModelAttribute("user") User user) {
+    public String newUser(Model model) {
+        model.addAttribute("user", new User());
         return "create";
     }
 
@@ -54,7 +55,7 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public String editUser(@Valid User user, BindingResult bindingResult) {
+    public String updateUser(@Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "edit";
         } else {
